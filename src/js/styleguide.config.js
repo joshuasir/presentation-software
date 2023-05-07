@@ -15,15 +15,15 @@ module.exports = {
             components: [
                 './components/Input/Input.jsx',
                 './components/Button/Button.jsx',
-                './components/AddTodo/AddTodo.jsx',
+                './components/AddMusic/AddMusic.jsx',
                 './components/DataOptionsTab/DataOptionsTab.jsx',
             ],
         },
         {
             name: 'Home',
             components: [
-                './pages/Home/components/TodoListUI/TodoListUI.jsx',
-                './pages/Home/components/TodoPageUI/TodoPageUI.jsx'
+                './pages/Home/components/MusicListUI/MusicListUI.jsx',
+                './pages/Home/components/MusicPageUI/MusicPageUI.jsx'
             ],
         },
         // {

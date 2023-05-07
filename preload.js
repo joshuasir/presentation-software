@@ -30,21 +30,21 @@ contextBridge.exposeInMainWorld('e_notification', {
 })
 
 // Export the apis per feature here:
-contextBridge.exposeInMainWorld('api_todos', {
-    async getTodos() {
-        const result = await ipcRenderer.invoke('get-todos')
+contextBridge.exposeInMainWorld('api_musics', {
+    async getMusics() {
+        const result = await ipcRenderer.invoke('get-musics')
         return result
     },
-    async addTodo(description) {
-        await ipcRenderer.invoke('add-todo', description)
+    async addMusic(args) {
+        await ipcRenderer.invoke('add-music', args)
     },
-    async updateTodo(args) {
-        await ipcRenderer.invoke('update-todo', args)
+    async updateMusicLyrics(args) {
+        await ipcRenderer.invoke('update-lyrics', args)
     },
-    async deleteTodo(todoId) {
-        await ipcRenderer.invoke('delete-todo', todoId)
+    async updateMusicTitle(args) {
+        await ipcRenderer.invoke('update-title', args)
     },
-    async deleteTodos() {
-        await ipcRenderer.invoke('delete-todos')
+    async deleteMusic(musicId) {
+        await ipcRenderer.invoke('delete-music', musicId)
     }
 })

@@ -13,7 +13,7 @@ runHookApp({
         require('./services/sqlite'),
     ],
     features: [
-        require('./features/feature-todo/index'),
+        require('./features/feature-music/index'),
     ],
     settings: async ({ setConfig, getEnv }) => {
         setConfig('ipcMain.routes', [{

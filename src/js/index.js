@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
-
+import '../index.css'
 // import './styles'
 import App from './App'
 import { createState } from './app.state'

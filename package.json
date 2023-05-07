@@ -73,10 +73,13 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
+    "css-loader": "^6.7.3",
     "electron": "^8.5.0",
     "electron-builder": "^22.9.1",
     "electron-reload": "^1.5.0",
+    "postcss-loader": "^7.3.0",
     "react-styleguidist": "^11.1.5",
+    "tailwindcss": "^3.3.2",
     "url-loader": "^4.1.1",
     "webpack-merge": "^5.7.3"
   },
@@ -86,7 +89,6 @@
     "@forrestjs/hooks": "^3.19.1",
     "babel-loader": "^8.2.2",
     "babel-runtime": "^6.26.0",
-    "css-loader": "^5.0.1",
     "electron-devtools-installer": "^3.1.1",
     "electron-is-dev": "^1.2.0",
     "node-env-file": "^0.1.8",

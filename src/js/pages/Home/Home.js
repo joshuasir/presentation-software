@@ -5,41 +5,45 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import {
-    getTodos,
-    addTodo,
-    getTodo,
-    updateTodo,
-    deleteTodo,
-    deleteTodos,
-} from '../../features/feature-todo/services/todo.service'
+    getMusics,
+    addMusic,
+    getMusic,
+    updateMusicTitle,
+    updateMusicLyrics,
+    deleteMusic,
+} from '../../features/feature-music/services/music.service'
 
 
-import TodoPageUI from './components/TodoPageUI'
+import MusicPageUI from './components/MusicPageUI'
 // import DataOptionsTab from '../../../components/DataOptionsTab'
 
-const mapState = ({ todos }) => ({
-    list: todos.list,
+const mapState = ({ musics }) => ({
+    list: musics.list,
 })
 
 const mapDispatch = (dispatch) => ({
-    getTodos: () => dispatch(getTodos()),
-    addTodo: (todo) => dispatch(addTodo(todo)),
-    getTodo: (todoId) => dispatch(getTodo(todoId)),
-    updateTodo: (todoId, newVal) => dispatch(updateTodo(todoId, newVal)),
-    deleteTodo: (todoId) => dispatch(deleteTodo(todoId)),
-    deleteTodos: () => dispatch(deleteTodos()),
-    // openTodo: todoId => dispatch({
-    //     type: '@open::todos::todo-page',
-    //     todoId: todoId,
+    getMusics: () => dispatch(getMusics()),
+    addMusic: (music) => dispatch(addMusic(music)),
+    getMusic: (musicId) => dispatch(getMusic(musicId)),
+    getMusics: () => dispatch(getMusics()),
+    
+    updateMusicLyrics: (musicId, newVal) => dispatch(updateMusicLyrics(musicId, newVal)),
+    updateMusicTitle: (musicId, newVal) => dispatch(updateMusicTitle(musicId, newVal)),
+    deleteMusic: (musicId) => dispatch(deleteMusic(musicId)),
+    // deleteMusics: () => dispatch(deleteMusics()),
+    // openMusic: musicId => dispatch({
+    //     type: '@open::musics::music-page',
+    //     musicId: musicId,
     // }),
 })
+
 
 class Home extends Component {
     async componentDidMount() {
         try {
-            const { getTodos } = this.props
+            const { getMusics } = this.props
             this.setState({ isLoading: true })
-            await getTodos()
+            await getMusics()
             this.setState({
                 isLoading: false,
             })
@@ -54,7 +58,7 @@ class Home extends Component {
     }
 
     // tryResponder = async () => {
-    //     await this.props.deleteTodos()
+    //     await this.props.deleteMusics()
     // }
 
     // handleExport = () => {
@@ -63,29 +67,31 @@ class Home extends Component {
     render() {
         const {
             list,
-            addTodo,
-            getTodo,
-            updateTodo,
-            deleteTodo,
+            addMusic,
+            getMusic,
+            updateMusicTitle,
+            updateMusicLyrics,
+            deleteMusic,
         } = this.props
 
         return (
             <div style={{ padding: 15 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                    <h2>Todo list</h2>
+                    <h2>Music list</h2>
                     {/* <DataOptionsTab
                         onExport={this.handleExport}
                         onImport={this.tryResponder}
                     /> */}
                 </div>
                 {(this.state.testing) ? <p>{this.state.testing}</p> : null}
-                <TodoPageUI
+                <MusicPageUI
                     list={list}
                     onOpen={() => console.log('hi')}
-                    onAddTodo={addTodo}
-                    onGetTodo={getTodo}
-                    onUpdateTodo={updateTodo}
-                    onDeleteTodo={deleteTodo}
+                    onAddMusic={addMusic}
+                    onGetMusic={getMusic}
+                    onUpdateMusicLyrics={updateMusicLyrics}
+                    onUpdateMusicTitle={updateMusicTitle}
+                    onDeleteMusic={deleteMusic}
                 />
             </div>
         )
@@ -94,7 +100,7 @@ class Home extends Component {
 
 Home.propTypes = {
     list: PropTypes.array,
-    getTodos: PropTypes.func.isRequired,
+    getMusics: PropTypes.func.isRequired,
 }
 
 // export default Home

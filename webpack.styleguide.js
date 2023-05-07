@@ -60,6 +60,13 @@ module.exports = {
           'css-loader',
           // Compiles Sass to CSS
           'sass-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+            },
+          },
+          'postcss-loader',
         ],
       },
       {

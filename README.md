@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # A boilerplate for Electron + React + Redux with SQLite database
 
 ## Tech stack:
@@ -97,3 +98,6 @@ Packs the app for macOS environment.
 ├── webpack.prod.js          # webpack config for production environment
 └── webpack.styleguide.js    # webpack config for running react-styleguide
 ```
+=======
+# presentation-software
+>>>>>>> c5145dda76e90cc7b9c758bd79567f9076898d9b

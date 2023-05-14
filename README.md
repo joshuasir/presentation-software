@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-# A boilerplate for Electron + React + Redux with SQLite database
+# Presentation Software using boilerplate for Electron + React + Redux with SQLite database
 
 ## Tech stack:
 

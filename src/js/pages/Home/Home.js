@@ -15,6 +15,7 @@ import {
 
 
 import MusicPageUI from './components/MusicPageUI'
+import PresentationPageUI from './components/PresentationPageUI/PresentationPageUI'
 // import DataOptionsTab from '../../../components/DataOptionsTab'
 
 const mapState = ({ musics }) => ({
@@ -27,8 +28,8 @@ const mapDispatch = (dispatch) => ({
     getMusic: (musicId) => dispatch(getMusic(musicId)),
     getMusics: () => dispatch(getMusics()),
     
-    updateMusicLyrics: (musicId, newVal) => dispatch(updateMusicLyrics(musicId, newVal)),
-    updateMusicTitle: (musicId, newVal) => dispatch(updateMusicTitle(musicId, newVal)),
+    updateMusicLyrics: (musicId,newVal) => dispatch(updateMusicLyrics(musicId,newVal)),
+    updateMusicTitle: (musicId,newVal) => dispatch(updateMusicTitle(musicId,newVal)),
     deleteMusic: (musicId) => dispatch(deleteMusic(musicId)),
     // deleteMusics: () => dispatch(deleteMusics()),
     // openMusic: musicId => dispatch({
@@ -75,14 +76,8 @@ class Home extends Component {
         } = this.props
 
         return (
-            <div style={{ padding: 15 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                    <h2>Music list</h2>
-                    {/* <DataOptionsTab
-                        onExport={this.handleExport}
-                        onImport={this.tryResponder}
-                    /> */}
-                </div>
+            <><div className='bg-white w-1/2 h-screen' style={{ padding: 15 }}>
+
                 {(this.state.testing) ? <p>{this.state.testing}</p> : null}
                 <MusicPageUI
                     list={list}
@@ -91,9 +86,12 @@ class Home extends Component {
                     onGetMusic={getMusic}
                     onUpdateMusicLyrics={updateMusicLyrics}
                     onUpdateMusicTitle={updateMusicTitle}
-                    onDeleteMusic={deleteMusic}
-                />
+                    onDeleteMusic={deleteMusic} />
             </div>
+            <div className='bg-black'>
+                    <PresentationPageUI />
+
+                </div></>
         )
     }
 }

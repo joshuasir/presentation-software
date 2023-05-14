@@ -5,6 +5,7 @@ const sqlite = require('../../../services/sqlite')
 
 const method = async (args) => {
     const MusicModel = sqlite.getModel('Music')
+    // console.log(args)
     const result = await MusicModel.handleUpdateMusicLyrics(args)
     return result
 }

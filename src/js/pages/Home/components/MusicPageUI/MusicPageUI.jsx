@@ -7,6 +7,7 @@ import UpdateMusic from 'components/UpdateMusic'
 import Modal from 'components/Modal'
 
 import getStyles from './MusicPageUI.style'
+import SearchBar from '../../../../components/SearchBar/SearchBar'
 const styles = getStyles()
 
 class MusicPageUI extends React.PureComponent {
@@ -16,31 +17,52 @@ class MusicPageUI extends React.PureComponent {
         errorMsg: null,
         // edit related
         editModal: false,
+        addModal: false,
         editMusicId: null,
         editInputValue: '',
         editErrorMsg: null,
+        successMsg:'',
+        keyword:''
+    }
+    handleDismissEditModal = () =>{
+        this.setState({
+            ...this.state, 
+            editModal: false,
+            successMessage:'', 
+        })
+    }
+    handleDismissAddModal = () =>{
+        this.setState({
+            ...this.state, 
+            addModal: false,
+            successMessage:'', 
+        })
+    }
+    handleSearchChange = (val) => {
+        this.setState({...this.state,keyword: val })
     }
 
     handleTitleInput = (e) => {
-        this.setState({ inputTitleValue: e.target.value, errorMsg: null })
+        this.setState({...this.state,inputTitleValue: e.target.value, errorMsg: null })
     }
     handleLyricsInput = (e) => {
-        this.setState({ inputLyricsValue: e.target.value, errorMsg: null })
+        this.setState({...this.state,inputLyricsValue: e.target.value, errorMsg: null })
     }
 
     handleEditInputTitle = (e) => {
-        this.setState({ editInputTitleValue: e.target.value, editErrorMsg: null })
+        //console.log('tes')
+        this.setState({...this.state,editInputTitleValue: e.target.value, editErrorMsg: null })
     }
     handleEditInputLyrics = (e) => {
-        this.setState({ editInputLyricsValue: e.target.value, editErrorMsg: null })
+        this.setState({...this.state,editInputLyricsValue: e.target.value, editErrorMsg: null })
     }
     handleAdd = (args) => {
         const { onAddMusic } = this.props
 
-        if (!args ||args.title.length === 0 || args.lyrics.length===0) return this.setState({ errorMsg: 'Please enter at least one character' })
+        if (!args ||args.title.length === 0 || args.lyrics.length===0) return this.setState({ ...this.state,errorMsg: 'Please enter both title and lyrics',successMsg:'' })
 
         onAddMusic(args)
-        this.setState({ inputTitleValue: '',inputLyricsValue:'' })
+        this.setState({...this.state,inputTitleValue: '',inputLyricsValue:'',successMsg:'Successfully Added!' })
     }
 
     handleEditModal = (musicId) => {
@@ -50,22 +72,27 @@ class MusicPageUI extends React.PureComponent {
         const selectedMusic = list.filter(item => item.music_id === musicId)
         // 2 - set the state for modal display
         this.setState({
+            ...this.state,
             editModal: true,
+            successMsg:'',
             editMusicId: musicId,
-            editInputValue: selectedMusic[0].description,
+            editInputTitleValue: selectedMusic[0].title,
+            editInputLyricsValue: selectedMusic[0].lyrics,
         })
     }
 
     handleMusicUpdate = (args) => {
         // import service
         const { editMusicId } = this.state
-        const { onUpdateMusic } = this.props
-
-        if (!args || args.title.length === 0|| args.lyrics.length === 0) return this.setState({ editErrorMsg: 'Please enter at least one character' })
+        const { onUpdateMusicLyrics,onUpdateMusicTitle } = this.props
+        // console.log(args)
+        if (!args || args.title.length === 0|| args.lyrics.length === 0) return this.setState({ ...this.state,editErrorMsg: 'Please enter both title and lyrics',successMsg:'' })
 
         // update the music and close modal
-        onUpdateMusic(editMusicId, args)
-        this.setState({ editModal: false })
+        // console.log(args)
+        onUpdateMusicLyrics(editMusicId,args.lyrics)
+        onUpdateMusicTitle(editMusicId, args.title)
+        this.setState({...this.state,successMsg:'Successfully Updated!' })
     }
 
     handleDelete = (musicId) => {
@@ -77,60 +104,79 @@ class MusicPageUI extends React.PureComponent {
         const {
             editModal,
             errorMsg,
+            successMsg,
             inputTitleValue,
             inputLyricsValue,
             editInputTitleValue,
             editInputLyricsValue,
             editErrorMsg,
+            addModal,
+            keyword
         } = this.state
         const { list, onGetMusic } = this.props
         return (
             <div style={styles.wrapper}>
                 <Modal
                     isVisible={editModal}
-                    onDismiss={() => this.setState({ editModal: false, editMusicId: null })}
-                    height={200}
-                    width={750}
+                    onDismiss={() => this.setState({ ...this.state,editModal: false, editMusicId: null,editErrorMsg:'',successMsg:'' })}
+                    height={550}
+                    width={1850}
                 >
-                    <div style={{ padding: 15, width: '100%', background: 'white' }}>
-                        <p style={{
-                            margin: 0,
-                            padding: '0 15px',
-                            fontSize: 18,
-                            fontWeight: 500,
-                        }}>Edit music</p>
+                 
                         <UpdateMusic
                             onUpdate={(e) => this.handleMusicUpdate(e)}
                             // onInputChange={(e) => this.handleEditInput(e)}
                             onTitleInputChange={(e) => this.handleEditInputTitle(e)}
                             onLyricsInputChange={(e) => this.handleEditInputLyrics(e)}
-                    
                             errorMsg={editErrorMsg}
+                            successMsg={successMsg}
+                            onDismiss={() => this.handleDismissEditModal()}
+                    
                             // inputValue={editInputValue}
-
                             inputTitleValue={editInputTitleValue}
                             inputLyricsValue={editInputLyricsValue}
                 />
-                        
-                    </div>
+                
                 </Modal>
+                <Modal
+                    isClosable={false}
+                    isVisible={addModal}
+                    onDismiss={() => this.setState({...this.state, addModal: false,errorMsg:'',successMsg:'' })}
+                    height={550}
+                    width={1850}
+                >
                 <AddMusic
                     onAdd={(e) => this.handleAdd(e)}
                     onTitleInputChange={(e) => this.handleTitleInput(e)}
                     onLyricsInputChange={(e) => this.handleLyricsInput(e)}
-                    
+                    onDismiss={() => this.handleDismissAddModal()}
+                    successMsg={successMsg}
                     errorMsg={errorMsg}
                     inputTitleValue={inputTitleValue}
                     inputLyricsValue={inputLyricsValue}
                 />
+                </Modal>
                 <div>
-                    <h2>Music list</h2>
+                    <div className="flex justify-start">
+                        <h1 className='pr-3'>Music list</h1>
+                        <svg  onClick={()=> this.setState({...this.state, addModal: true })} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 hover:cursor-pointer">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        <svg onClick={()=>{}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 hover:cursor-pointer">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                        </svg>
+                        <SearchBar keyword={keyword} setKeyword={(e)=>this.handleSearchChange(e)} >
+
+                        </SearchBar>
+                    </div>
+                    
                     <MusicListUI
-                        data={list}
+                        data={list.filter(e=>e.title.includes(keyword)||e.lyrics.includes(keyword)) ?? []}
                         onOpen={(musicId) => onGetMusic(musicId)}
                         onDelete={this.handleDelete}
                         onEdit={this.handleEditModal}
                     />
+                    
                 </div>
             </div>
         )

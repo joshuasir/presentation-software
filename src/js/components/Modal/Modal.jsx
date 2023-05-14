@@ -5,6 +5,7 @@ import getStyles from './Modal.style'
 const styles = getStyles()
 
 const Modal = ({
+    isClosable,
     isVisible,
     onDismiss,
     height,
@@ -15,15 +16,16 @@ const Modal = ({
 
     return (
         <div>
-            <div style={styles.wrapper} onClick={onDismiss} />
-            <div
+            <div style={styles.wrapper} onClick={()=> isClosable && onDismiss()}/>
+            <div className='w-80'
                 style={{
                     ...styles.innerWrapper,
                     height: height,
                     maxHeight: height,
-                    width: width,
+                    
                 }}
             >
+                
                 {children}
             </div>
         </div>

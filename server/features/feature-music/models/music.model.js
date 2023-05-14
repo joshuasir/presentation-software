@@ -62,11 +62,11 @@ const handleUpdateMusicLyrics = (conn, Model) => async (args) => {
         `SET lyrics = :lyrics`,
         `WHERE music_id = :musicId`,
     ].filter(i => i !== null).join(' ')
-
     const res = await conn.query(q, {
         replacements: {
-            musicId: args.musicId,
             lyrics: args.lyrics,
+            musicId: args.musicId,
+            
         },
     })
 
@@ -84,8 +84,9 @@ const handleUpdateMusicTitle = (conn, Model) => async (args) => {
 
     const res = await conn.query(q, {
         replacements: {
-            musicId: args.musicId,
             title: args.title,
+            musicId: args.musicId,
+            
         },
     })
 

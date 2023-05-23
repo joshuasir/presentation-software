@@ -16,6 +16,7 @@ import {
 
 import MusicPageUI from './components/MusicPageUI'
 import PresentationPageUI from './components/PresentationPageUI/PresentationPageUI'
+import StreamPageUI from './components/StreamPageUI/StreamPageUI'
 // import DataOptionsTab from '../../../components/DataOptionsTab'
 
 const mapState = ({ musics }) => ({
@@ -43,8 +44,13 @@ class Home extends Component {
     async componentDidMount() {
         try {
             const { getMusics } = this.props
+            
             this.setState({ isLoading: true })
             await getMusics()
+            if(JSON.parse(querystring.parse(global.location.search)['fullScreenMode'])){
+                this.setState({...state,fullScreenMode:true})
+                console.log(true)
+            }
             this.setState({
                 isLoading: false,
             })
@@ -76,22 +82,31 @@ class Home extends Component {
         } = this.props
 
         return (
-            <><div className='bg-white w-1/2 h-screen' style={{ padding: 15 }}>
-
-                {(this.state.testing) ? <p>{this.state.testing}</p> : null}
-                <MusicPageUI
-                    list={list}
-                    onOpen={() => console.log('hi')}
-                    onAddMusic={addMusic}
-                    onGetMusic={getMusic}
-                    onUpdateMusicLyrics={updateMusicLyrics}
-                    onUpdateMusicTitle={updateMusicTitle}
-                    onDeleteMusic={deleteMusic} />
+            <>
+            {this.state.fullScreenMode ? <></> :
+            <div className='w-full flex'>
+            <div className='bg-white w-1/3 h-screen' style={{ padding: 15 }}>
+          
+            {(this.state.testing) ? <p>{this.state.testing}</p> : null}
+            <MusicPageUI
+                list={list}
+                onOpen={() => console.log('hi')}
+                onAddMusic={addMusic}
+                onGetMusic={getMusic}
+                onUpdateMusicLyrics={updateMusicLyrics}
+                onUpdateMusicTitle={updateMusicTitle}
+                onDeleteMusic={deleteMusic} />
             </div>
-            <div className='bg-black'>
-                    <PresentationPageUI />
+        <div className='bg-gray-300 w-1/3'>
+            <PresentationPageUI musics={list}/>
 
-                </div></>
+        </div>
+        <div className='w-1/3'>
+            <StreamPageUI musics={list}/>
+        </div>
+        </div>
+        }
+        </>
         )
     }
 }

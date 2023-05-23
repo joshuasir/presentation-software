@@ -14,12 +14,12 @@ function createWindow() {
         webPreferences: {
             // as a best practice + safety, nodeIntegration should be false
             // this keeps the renderer thread having direct access to Node
-            nodeIntegration: false,
+            nodeIntegration: true,
             // will sanitize JS code to be safe
             worldSafeExecuteJavascript: true,
             // is a feature that ensures that both your
             // preload scripts and Electron's internal logic tunes in seperate context:
-            contextIsolation: true,
+            contextIsolation: false,
             // preload script exposes the parts needed for renderer from main thread:
             preload: path.join(__dirname, 'preload.js')
         },
@@ -51,7 +51,7 @@ app.whenReady()
 
         // Create the window:
         createWindow();
-
+   
         // Initialize React & Redux devtools for dev environment
         if (isDev) {
             installExtension(REACT_DEVELOPER_TOOLS)

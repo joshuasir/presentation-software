@@ -23,14 +23,21 @@ const { ipcRenderer, contextBridge } = require('electron')
 // user's computer. E.g. don't directly expose core Electron (even IPC) or node.js modules.
 
 // notification example:
-contextBridge.exposeInMainWorld('e_notification', {
+window.e_notification = {
     sendNotification(message) {
         ipcRenderer.invoke('notify', message)
     }
-})
-
+}
+// window.spectacle = require('spectacle')
+// contextBridge.exposeInMainWorld('spectacle',{
+//     Deck:spectacle.Deck,
+//     Slide: spectacle.Slide,
+//     // Text: spectacle.Text.,
+//     // DefaultTemplate:spectacle.DefaultTemplate,
+//     // Heading:spectacle.Heading
+// })
 // Export the apis per feature here:
-contextBridge.exposeInMainWorld('api_musics', {
+window.api_musics = {
     async getMusics() {
         const result = await ipcRenderer.invoke('get-musics')
         return result
@@ -47,4 +54,4 @@ contextBridge.exposeInMainWorld('api_musics', {
     async deleteMusic(musicId) {
         await ipcRenderer.invoke('delete-music', musicId)
     }
-})
+}

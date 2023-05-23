@@ -5,9 +5,13 @@ import MusicListUI from '../MusicListUI'
 import AddMusic from 'components/AddMusic'
 import UpdateMusic from 'components/UpdateMusic'
 import Modal from 'components/Modal'
-
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import getStyles from './MusicPageUI.style'
 import SearchBar from '../../../../components/SearchBar/SearchBar'
+import * as xlsx from 'xlsx';
+
+
 const styles = getStyles()
 
 class MusicPageUI extends React.PureComponent {
@@ -24,6 +28,8 @@ class MusicPageUI extends React.PureComponent {
         successMsg:'',
         keyword:''
     }
+    MySwal = withReactContent(Swal)
+    fileInputRef = React.createRef();
     handleDismissEditModal = () =>{
         this.setState({
             ...this.state, 
@@ -31,6 +37,83 @@ class MusicPageUI extends React.PureComponent {
             successMessage:'', 
         })
     }
+    getBase64 = (file, cb) => {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            cb(reader.result)
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+        };
+    }
+    handleFileUpload = (event) => {
+        const fileObj = event.target.files && event.target.files[0];
+        if (!fileObj) {
+          return;
+        }
+        // try{
+        // Swal.fire({
+        //     title: 'You sure you want to upload?',
+        //     text: "You're uploading "+event.target.files[0].name,
+        //     icon: 'warning',
+        //     showCancelButton: true,
+        //     confirmButtonColor: '#3085d6',
+        //     cancelButtonColor: '#d33',
+        //     confirmButtonText: 'Yes'
+        //   }).then(async (result) => {
+        //     if(result.isConfirmed)
+        //     {
+        this.getBase64(fileObj,(base64)=>{
+            const bufferExcel = Buffer.from(base64.replace("data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64", ""),'base64');
+            const wb = xlsx.read(bufferExcel, { type: 'buffer' });
+            
+        // Set up the onload event handler
+     
+      
+          // Assuming the first sheet is the one you want to work with
+          const worksheet = wb.Sheets[wb.SheetNames[0]];
+      
+          // Convert the sheet to JSON data
+        const jsonData = xlsx.utils.sheet_to_json(worksheet, { header: ['Title', 'Lyrics'],range: 1  });
+
+        // Do something with the JSON data
+        jsonData.forEach(a=>{
+           if(!this.props.list.filter(e=>e.title==a.Title && e.lyrics==a.Lyrics).length){
+                console.log(a)
+                this.handleAdd({title:a.Title,lyrics:a.Lyrics})
+            }
+        })
+        });
+    //     }})
+    // }catch(ex){
+    //     console.log(ex)
+    // }
+        // Read the file as binary data
+        // reader.readAsBinaryString(file);
+      };
+    handleExportExcel = () => {
+        // Create a workbook object
+        const workbook = xlsx.utils.book_new();
+        const { list } = this.props
+        // Create a worksheet and add data to it
+        // const aoa
+        const worksheet = xlsx.utils.json_to_sheet([...(list.filter(e=>e.title.includes(this.state.keyword)||e.lyrics.includes(this.state.keyword)) ?? []).map(a=>({'Title':a.title,'Lyrics':a.lyrics}))]
+        );
+      
+        // Add the worksheet to the workbook
+        xlsx.utils.book_append_sheet(workbook, worksheet, 'Music');
+        const excelData = xlsx.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+
+        const blob = new Blob([excelData], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'music.xlsx';
+        link.click();
+        URL.revokeObjectURL(url);
+    
+      };
     handleDismissAddModal = () =>{
         this.setState({
             ...this.state, 
@@ -162,9 +245,16 @@ class MusicPageUI extends React.PureComponent {
                         <svg  onClick={()=> this.setState({...this.state, addModal: true })} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 hover:cursor-pointer">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
-                        <svg onClick={()=>{}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 hover:cursor-pointer">
+                        <svg onClick={()=>this.handleExportExcel()} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                        </svg>
+
+                   
+                        <svg onClick={()=> this.fileInputRef.current.click()} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 hover:cursor-pointer">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
                         </svg>
+                        <input ref={this.fileInputRef} style={{display:'none'}} type="file" accept=".xlsx" onChange={(e)=>this.handleFileUpload(e)} />
+    
                         <SearchBar keyword={keyword} setKeyword={(e)=>this.handleSearchChange(e)} >
 
                         </SearchBar>

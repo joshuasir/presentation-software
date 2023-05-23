@@ -34,10 +34,10 @@ const MusicListUI = ({ data, onOpen, onDelete, onEdit }) => {
                         <thead
                             className="border-b bg-white dark:border-neutral-500 dark:bg-neutral-400">
                             <tr>
-                            <th scope="col" className="px-6 py-4">Music Id</th>
-                            <th scope="col" className="px-6 py-4">Title</th>
+                            <th scope="col" className="px-3 py-4 w-1">Id</th>
+                            <th scope="col" className="px-3 py-4">Title</th>
                             {/* <th scope="col" className="px-6 py-4">Lyrics</th> */}
-                            <th scope="col" className="px-6 py-4">Actions</th>
+                            <th scope="col" className="px-3 py-4 w-2">Actions</th>
                             </tr>
                         </thead>
                         <tbody>

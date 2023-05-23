@@ -2,22 +2,26 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
+  
   entry: './src/js/index.js',
   devtool: 'inline-source-map',
   target: 'electron-renderer',
+  
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.jsx$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
+          // eslint-disable-next-line global-require
           options: {
             presets: [[
               '@babel/preset-env', {
                 targets: {
                   esmodules: true
-                }
+                },
+                
               }],
               '@babel/preset-react'],
             plugins: [
@@ -28,16 +32,18 @@ module.exports = {
         }
       },
       {
-        test: /\.jsx$/,
+        test: /\.js$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
+          // eslint-disable-next-line global-require
           options: {
             presets: [[
               '@babel/preset-env', {
                 targets: {
                   esmodules: true
-                }
+                },
+                
               }],
               '@babel/preset-react'],
             plugins: [
@@ -54,8 +60,11 @@ module.exports = {
           'style-loader',
           // Translates CSS into CommonJS
           'css-loader',
+          
           // Compiles Sass to CSS
           'sass-loader',
+
+          'postcss-loader',
         ],
       },
       {
@@ -73,7 +82,11 @@ module.exports = {
       },
     ]
   },
-  plugins: [],
+  // plugins: [
+  //   new webpack.ProvidePlugin({
+  //     process: 'process/browser'
+  //   })
+  // ],
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
@@ -83,10 +96,13 @@ module.exports = {
       lib: path.resolve(__dirname, 'src/js/lib'),
       resources: path.resolve(__dirname, 'src/js/resources'),
       pages: path.resolve(__dirname, 'src/js/pages'),
-    }
+    },
+
   },
+
   output: {
     filename: 'app.js',
     path: path.resolve(__dirname, 'build', 'js'),
+    // library: 'Spectacle',
   },
 };

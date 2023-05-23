@@ -8,7 +8,7 @@ module.exports = {
   mode: 'development',
   entry: './src/js/index.js',
   devtool: 'inline-source-map',
-  target: 'web',
+  target: 'electron-renderer',
   module: {
     rules: [
       {
@@ -60,12 +60,7 @@ module.exports = {
           'css-loader',
           // Compiles Sass to CSS
           'sass-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-            },
-          },
+          
           'postcss-loader',
         ],
       },

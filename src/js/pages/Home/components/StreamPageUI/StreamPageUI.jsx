@@ -33,7 +33,9 @@ function StreamPageUI(props) {
 
 
   const createPresenterWindow = () => {
-    console.log(window.location.href.split('?')[0])
+  
+    // console.log(window.location.href.parse(global.location.search)['fullScreenMode'])
+            
     const BrowserWindow = remote.BrowserWindow
     const win = new BrowserWindow({
       width: 1200,
@@ -50,10 +52,10 @@ function StreamPageUI(props) {
           // preload script exposes the parts needed for renderer from main thread:
           preload: path.join(__dirname, 'preload.js')
       },
-  }).loadURL(window.location.href+'&fullScreenMode=true')
+  }).loadURL(window.location.href+'&fullScreenMode=true&ids='+selectMusics.map(a=>a.music_id).join(','));
 
   win.loadFile('index.html')
-  isDev && win.webContents.openDevTools()
+  // win.webContents.openDevTools()
     // BrowserWindow.loadURL();
     // Add any additional configuration or event handling for the presenter window
   }

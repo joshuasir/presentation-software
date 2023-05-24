@@ -80,7 +80,7 @@ class MusicPageUI extends React.PureComponent {
         // Do something with the JSON data
         jsonData.forEach(a=>{
            if(!this.props.list.filter(e=>e.title==a.Title && e.lyrics==a.Lyrics).length){
-                console.log(a)
+                // console.log(a)
                 this.handleAdd({title:a.Title,lyrics:a.Lyrics})
             }
         })

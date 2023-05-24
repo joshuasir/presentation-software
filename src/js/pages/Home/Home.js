@@ -15,8 +15,9 @@ import {
 
 
 import MusicPageUI from './components/MusicPageUI'
-import PresentationPageUI from './components/PresentationPageUI/PresentationPageUI'
+import PreviewPageUI from './components/PreviewPageUI/PreviewPageUI'
 import StreamPageUI from './components/StreamPageUI/StreamPageUI'
+import PresentationPageUI from './components/PresentationPageUI/PresentationPageUI'
 // import DataOptionsTab from '../../../components/DataOptionsTab'
 
 const mapState = ({ musics }) => ({
@@ -47,12 +48,19 @@ class Home extends Component {
             
             this.setState({ isLoading: true })
             await getMusics()
-            if(JSON.parse(querystring.parse(global.location.search)['fullScreenMode'])){
-                this.setState({...state,fullScreenMode:true})
-                console.log(true)
-            }
+            let params = (new URL(document.location)).searchParams;
+  
+            let isFullScreen = params.get("fullScreenMode");
+            let ids = params.get("ids");
+  
+           // if(JSON.parse()){
+            //     this.setState({...state,fullScreenMode:true})
+            //     alert(true)
+            // }
             this.setState({
                 isLoading: false,
+                isFullScreen: isFullScreen,
+                ids :ids.split(",").map(id=>id.trim())
             })
         } catch (err) {
             this.setState({ isLoading: false })
@@ -62,6 +70,8 @@ class Home extends Component {
     state = {
         isLoading: false,
         testing: null,
+        isFullScreen: false,
+        ids:[]
     }
 
     // tryResponder = async () => {
@@ -83,7 +93,7 @@ class Home extends Component {
 
         return (
             <>
-            {this.state.fullScreenMode ? <></> :
+            {this.state.isFullScreen ? <PresentationPageUI musics={list.filter(l=>this.state.ids.some(id=>id==l.music_id))}/> :
             <div className='w-full flex'>
             <div className='bg-white w-1/3 h-screen' style={{ padding: 15 }}>
           
@@ -97,8 +107,8 @@ class Home extends Component {
                 onUpdateMusicTitle={updateMusicTitle}
                 onDeleteMusic={deleteMusic} />
             </div>
-        <div className='bg-gray-300 w-1/3'>
-            <PresentationPageUI musics={list}/>
+        <div className='bg-gray-300 w-1/3 h-screen'>
+            <PreviewPageUI musics={list}/>
 
         </div>
         <div className='w-1/3'>

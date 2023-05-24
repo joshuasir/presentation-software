@@ -95,7 +95,7 @@ class Home extends Component {
             <>
             {this.state.isFullScreen ? <PresentationPageUI musics={list.filter(l=>this.state.ids.some(id=>id==l.music_id))}/> :
             <div className='w-full flex'>
-            <div className='bg-white w-1/3 h-screen' style={{ padding: 15 }}>
+            <div className='bg-gray-200 w-96 h-screen' style={{ padding: 15 }}>
           
             {(this.state.testing) ? <p>{this.state.testing}</p> : null}
             <MusicPageUI
@@ -107,11 +107,11 @@ class Home extends Component {
                 onUpdateMusicTitle={updateMusicTitle}
                 onDeleteMusic={deleteMusic} />
             </div>
-        <div className='bg-gray-300 w-1/3 h-screen'>
+        <div className='bg-gray-300 w-1/3 overflow-hidden h-screen'>
             <PreviewPageUI musics={list}/>
 
         </div>
-        <div className='w-1/3 bg-black'>
+        <div className='w-1/3 bg-gray-200 overflow-hidden h-screen'>
             <StreamPageUI musics={list}/>
         </div>
         </div>

@@ -138,7 +138,7 @@ const init = (conn) => {
     Model.handleDeleteMusic = handleDeleteMusic(conn, Model)
     Model.handleGetMusics = handleGetMusics(conn, Model)
     //Model.handleDeleteMusics = handleDeleteMusics(conn, Model)
-    return Model.sync({ force: true })
+    return Model.sync({})
 }
 
 module.exports = { name: modelName, init }

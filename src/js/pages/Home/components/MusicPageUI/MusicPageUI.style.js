@@ -1,6 +1,6 @@
 const getStyles = () => ({
     wrapper: {
-        padding: 15,
+        // padding: 15,
     },
 })
 

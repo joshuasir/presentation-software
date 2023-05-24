@@ -27,8 +27,8 @@ const MusicListUI = ({ data, onOpen, onDelete, onEdit }) => {
     return (
     
             <div className="flex flex-col">
-                <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                    <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                <div className="overflow-x-auto ">
+                    <div className="inline-block min-w-full py-2">
                     <div className="overflow-hidden">
                         <table className="min-w-full text-left text-sm">
                         <thead
@@ -59,31 +59,50 @@ const MusicListUI = ({ data, onOpen, onDelete, onEdit }) => {
                     </div>
                     </div>
                 </div>
-                <nav aria-label="Page navigation example">
+                <nav aria-label="Page navigation example" className='mt-3'>
                   <ul className="list-style-none flex justify-start">
+                  {page.number-1>0 && <>
+                  <li 
+                       >
+                      <a onClick={(e) => {e.preventDefault();setPage({number:1}); }}
+                        className="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:bg-neutral-700 dark:hover:text-black"
+                        href="#"
+                         > {"<<"} </a>
+                    </li>
+                    
                     <li className='pr-3'>
-                      <a
-                        className="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:bg-neutral-700 dark:hover:text-black"
-                        href="#"
-                        onClick={() => setPage({number:Math.max(1,page.number-1)})}
-                        >Previous</a>
-                    </li>
-                    {[...Array(parseInt(data.length/ROWS)+(Math.min(data.length%ROWS,1))).keys()].map((index) => (
-                    <li aria-current={index==page.number ? "page":""} className='pr-3'>
+                    <a
+                      className="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:bg-neutral-700 dark:hover:text-black ml-2"
+                      href="#"
+                      onClick={() => setPage({number:Math.max(1,page.number-1)})}
+                      >{page.number-1}</a>
+                  </li>
+                  </>
+                    }
+                    
+                   <li aria-current={"page"} className='pr-3'>
                       <a 
-                        className="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:bg-neutral-700 dark:hover:text-black"
+                        className="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:bg-neutral-600 dark:hover:text-black"
                         href="#"
-                        onClick={() => setPage({number:index+1})}
-                        >{index+1}</a>
+                        onClick={() => setPage({number:page.number})}
+                        >{page.number}</a>
                     </li>
-                    ))}
+                    {page.number+1<= parseInt(data.length/ROWS)+(Math.min(data.length%ROWS,1)) && <>
                     <li 
                        >
                       <a onClick={(e) => {e.preventDefault();setPage({number:Math.min(parseInt(data.length/ROWS)+(Math.min(data.length%ROWS,1)),page.number+1)}); }}
                         className="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:bg-neutral-700 dark:hover:text-black"
                         href="#"
-                         >Next</a>
+                         >{page.number+1}</a>
                     </li>
+
+                    <li>
+                      <a onClick={(e) => {e.preventDefault();setPage({number:parseInt(data.length/ROWS)+(Math.min(data.length%ROWS,1))}); }}
+                        className="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:bg-neutral-700 dark:hover:text-black ml-2"
+                        href="#"
+                         > {">>"} </a>
+                    </li>
+                    </>}
                   </ul>
               </nav>
             </div>

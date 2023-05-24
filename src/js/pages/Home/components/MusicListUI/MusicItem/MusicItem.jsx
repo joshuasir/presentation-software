@@ -11,7 +11,9 @@ const MusicItem = ({ musicId, title,lyrics, onOpen, onDelete, onEdit,idx }) => {
         <tr onClick={() => onOpen(musicId)}
             className={"border-b bg-neutral-100 dark:border-neutral-500 font-medium " + ((idx%2==0)?"dark:bg-neutral-200":"bg-white")}>
             <td className="whitespace-nowrap px-3 py-3 font-medium">{musicId}</td>
-            <td className="whitespace-nowrap px-3 py-3 truncate w-4/5">{title}</td>
+            <td className="whitespace-nowrap px-3 py-3 truncate pr-0">
+                {title}
+                </td>
             {/* <td className="whitespace-nowrap px-6 py-4">{lyrics}</td> */}
             <td className="flex px-3 py-3">     
                 <span style={styles.editBtn} onClick={() => onEdit(musicId)}>

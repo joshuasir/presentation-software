@@ -3,12 +3,11 @@ import { remote } from 'electron'
 import path from 'path'
 import { DragDropContext,Draggable,Droppable } from 'react-beautiful-dnd'
 import Select from 'react-select'
+import pptxgen from "pptxgenjs";
+
 
 function StreamPageUI(props) {
   const { musics } = props
-  // const location = useLocation();
-  // const isPresenterMode = new URLSearchParams(location.search).get('presenterMode') === 'true';
-
   const [selectMusics, setSelectMusics] = useState([]);
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
@@ -30,12 +29,40 @@ function StreamPageUI(props) {
     // console.log(musics.filter(m=>selected.some(s=>s.value == m.music_id)))
     setSelectMusics(musics.filter(m=>selected.some(s=>s.value == m.music_id)))
   }
+  const handleExportPPT = () =>{
+    // 1. Create a new Presentation
+    let pres = new pptxgen();
 
+    selectMusics.forEach(music=>{
+      let slide = pres.addSlide();
+      let textboxText = music.title;
+      let textboxOpts = { x: '13%', y: '39%', color: "363636", bold:true,fontSize:52,align:'center' };
+      slide.addText(textboxText, textboxOpts);
+
+      music.lyrics.split('#').forEach(text=>{
+        let slide = pres.addSlide();
+        let textboxText = text.trim();
+        let textboxOpts = { x: '13%', y: '26.5%', color: "363636", bold:true,fontSize:40,align:'center' };
+        slide.addText(textboxText, textboxOpts);
+      })
+
+
+    })
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    
+    pres.writeFile({ fileName: "SM"+dd+mm+yyyy+".pptx" });
+
+   
+  }
 
   const createPresenterWindow = () => {
   
     // console.log(window.location.href.parse(global.location.search)['fullScreenMode'])
-            
+   
+      
     const BrowserWindow = remote.BrowserWindow
     const win = new BrowserWindow({
       width: 1200,
@@ -52,21 +79,18 @@ function StreamPageUI(props) {
           // preload script exposes the parts needed for renderer from main thread:
           preload: path.join(__dirname, 'preload.js')
       },
-  }).loadURL(window.location.href+'&fullScreenMode=true&ids='+selectMusics.map(a=>a.music_id).join(','));
+  })
+  win.loadURL(window.location.href.split('?')[0]+'?fullScreenMode=true&ids='+selectMusics.map(a=>a.music_id).join(','));
 
-  win.loadFile('index.html')
-  // win.webContents.openDevTools()
-    // BrowserWindow.loadURL();
-    // Add any additional configuration or event handling for the presenter window
   }
-  // const {Deck,Slide,Heading,DefaultTemplate} = window.spectacle
+
   return (
      <>
 
     <div className='p-5 pb-0 h-1/5 pt-3'>
     <div className='flex p-2'>
       
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white ml-auto hover:cursor-pointer">
+    <svg onClick={()=> handleExportPPT()} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white ml-auto hover:cursor-pointer">
       <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
     </svg>
     <svg onClick={()=> createPresenterWindow()} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white hover:cursor-pointer">

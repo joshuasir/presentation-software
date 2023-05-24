@@ -52,7 +52,7 @@ class Home extends Component {
   
             let isFullScreen = params.get("fullScreenMode");
             let ids = params.get("ids");
-  
+            // console.log(isFullScreen,ids)
            // if(JSON.parse()){
             //     this.setState({...state,fullScreenMode:true})
             //     alert(true)
@@ -111,7 +111,7 @@ class Home extends Component {
             <PreviewPageUI musics={list}/>
 
         </div>
-        <div className='w-1/3'>
+        <div className='w-1/3 bg-black'>
             <StreamPageUI musics={list}/>
         </div>
         </div>

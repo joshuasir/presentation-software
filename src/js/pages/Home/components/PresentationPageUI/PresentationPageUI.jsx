@@ -1,8 +1,6 @@
 import React,{useEffect, useState,useContext} from 'react'
 import { Deck, Slide, Heading, DefaultTemplate } from 'spectacle';
-import { remote } from 'electron'
-import path from 'path'
-import Select from 'react-select'
+
 
 
 function PresentationPageUI(props) {
@@ -13,7 +11,7 @@ function PresentationPageUI(props) {
 {musics &&
 
     <Deck 
-    template={ <DefaultTemplate /> } 
+    template={ <DefaultTemplate color={'black'} /> } 
     >
       {musics.map(music=>(
         <>
@@ -24,8 +22,8 @@ function PresentationPageUI(props) {
         </Slide>
         {music.lyrics.split('#').map(a=>(
           <Slide backgroundColor={'white'}>
-          <Heading color={'black'} lineHeight={'1.2em'} >
-            {a.trim()}
+          <Heading color={'black'} lineHeight={'1.2em'}>
+          <span className='whitespace-pre-line'>{a.trim()}</span>
           </Heading>
           </Slide>
       

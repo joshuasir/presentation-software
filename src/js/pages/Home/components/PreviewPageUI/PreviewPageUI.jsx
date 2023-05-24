@@ -102,7 +102,7 @@ function PreviewPageUI(props) {
         {music.lyrics.split('#').filter((a,idx)=> idx+1==currSlide && currSlide!=0 ).map(a=>(<>
 
         <Heading color={'black'} lineHeight={'1.2em'} >
-              {a.trim()}
+              <span className='whitespace-pre-line'>{a.trim()}</span> 
             </Heading>
 
       </>

@@ -60,18 +60,25 @@ class Home extends Component {
             this.setState({
                 isLoading: false,
                 isFullScreen: isFullScreen,
-                ids :ids.split(",").map(id=>id.trim())
+                ids :ids.split(",").map(id=>id.trim()),
             })
         } catch (err) {
             this.setState({ isLoading: false })
         }
+    }
+   handleSetMusic = (id) =>{
+        const { list } = this.props
+        this.setState({...this.state,music:list.find(a=>a.music_id==id)});
+        // setSelectedLyric(0)
+        
     }
 
     state = {
         isLoading: false,
         testing: null,
         isFullScreen: false,
-        ids:[]
+        ids:[],
+        music:null
     }
 
     // tryResponder = async () => {
@@ -93,7 +100,15 @@ class Home extends Component {
 
         return (
             <>
-            {this.state.isFullScreen ? <PresentationPageUI musics={list.filter(l=>this.state.ids.some(id=>id==l.music_id))}/> :
+            {this.state.isFullScreen ? <PresentationPageUI musics={
+                list.filter(l=>this.state.ids.some(id=>id==l.music_id)).
+                sort((a, b) => {
+                    const indexA = this.state.ids.indexOf(a.music_id+'');
+                    const indexB = this.state.ids.indexOf(b.music_id+'');
+                    // console.log(a.music_id,this.state.ids)
+                    return indexA-indexB;
+                  })
+            }/> :
             <div className='w-full flex'>
             <div className='bg-gray-200 w-96 h-screen' style={{ padding: 15 }}>
           
@@ -105,10 +120,12 @@ class Home extends Component {
                 onGetMusic={getMusic}
                 onUpdateMusicLyrics={updateMusicLyrics}
                 onUpdateMusicTitle={updateMusicTitle}
-                onDeleteMusic={deleteMusic} />
+                onDeleteMusic={deleteMusic} 
+                handleSetMusic={(id)=>this.handleSetMusic(id)}
+                />
             </div>
         <div className='bg-gray-300 w-1/3 overflow-hidden h-screen'>
-            <PreviewPageUI musics={list}/>
+            <PreviewPageUI musics={list} music={this.state.music} handleSetMusic={(id)=>this.handleSetMusic(id)}/>
 
         </div>
         <div className='w-1/3 bg-gray-200 overflow-hidden h-screen'>

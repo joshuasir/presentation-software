@@ -41,13 +41,13 @@ function StreamPageUI(props) {
     selectMusics.forEach(music=>{
       let slide = pres.addSlide();
       let textboxText = music.title;
-      let textboxOpts = { x: '13%', y: '39%', color: "363636", bold:true,fontSize:52,align:'center' };
+      let textboxOpts = { x: '13%', y: '32%', color: "363636", bold:true,fontSize:52,align:'center',valign:'top' };
       slide.addText(textboxText, textboxOpts);
 
       music.lyrics.split('#').forEach(text=>{
         let slide = pres.addSlide();
         let textboxText = text.trim();
-        let textboxOpts = { x: '13%', y: '26.5%', color: "363636", bold:true,fontSize:40,align:'center' };
+        let textboxOpts = { x: '13%', y: '7%', color: "363636", bold:true,fontSize:40,align:'center',valign:'top' };
         slide.addText(textboxText, textboxOpts);
       })
 
@@ -95,17 +95,17 @@ function StreamPageUI(props) {
     <div className='p-5 pb-0 h-20 pt-3'>
     <div className='flex p-2'>
       
-    <svg onClick={()=> handleExportPPT()} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 ml-auto hover:cursor-pointer">
+    <svg onClick={()=> handleExportPPT()} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 ml-auto hover:cursor-pointer hover:scale-110 transition-transform">
       <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
     </svg>
-    <svg onClick={()=> createPresenterWindow()} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 hover:cursor-pointer">
+    <svg onClick={()=> createPresenterWindow()} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 hover:cursor-pointer hover:scale-110 transition-transform">
       <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
     </svg>
 
     </div>
     
     <div className='bg-white rounded'>
-    <select id="multiSelection" data-te-select-init multiple onChange={()=>handleSetMusic()}>
+    <select id="multiSelection" data-te-select-filter data-te-select-init multiple onChange={()=>handleSetMusic()}>
     {musics.map(a=>(
       <option value={a.music_id}>{a.title}</option>
       

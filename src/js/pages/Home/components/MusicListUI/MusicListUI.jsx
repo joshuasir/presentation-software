@@ -6,12 +6,12 @@ import MusicItem from './MusicItem'
 import getStyles from './MusicListUI.style'
 const styles = getStyles()
 
-const MusicListUI = ({ data, onOpen, onDelete, onEdit }) => {
-    const ROWS = 5
+const MusicListUI = ({ data, onOpen, onDelete, onEdit, handleSetMusic }) => {
+    const ROWS = 7
     if (data.length === 0) {
         return (
         
-          <p style={{ margin: 0 }}>List is empty, add some musics!</p>
+          <p style={{ marginTop: '1em' }}>List is empty, add some musics!</p>
          
         )
     }
@@ -50,6 +50,7 @@ const MusicListUI = ({ data, onOpen, onDelete, onEdit }) => {
                                 onDelete={onDelete}
                                 onEdit={onEdit}
                                 idx={index}
+                                handleSetMusic={handleSetMusic}
                             />
                         ))}
                             

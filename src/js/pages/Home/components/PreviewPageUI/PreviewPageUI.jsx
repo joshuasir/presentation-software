@@ -6,16 +6,18 @@ import Select from 'react-select'
 
 
 function PreviewPageUI(props) {
-  const { musics } = props
+  const { musics,music,handleSetMusic } = props
   // const location = useLocation();
   // const isPresenterMode = new URLSearchParams(location.search).get('presenterMode') === 'true';
 
-  const [music, setMusic] = useState(musics.find(a=>a.music_id==1));
+  
   const [currSlide, setCurrSlide] = useState(0);
   // const [selectedLyric, setSelectedLyric] = useState(-1);
   const [isHover, setIsHover] = useState(0);
-  const handleSetMusic = (id) =>{
-    setMusic(musics.find(a=>a.music_id==id));
+
+  // const [music, setMusic] = useState(musics.find(a=>a.music_id==1));
+  const handleSelectMusic = (id) =>{
+    handleSetMusic(id);
     // setSelectedLyric(0)
     setCurrSlide(0)
     handleSelectedStyle(0)
@@ -62,7 +64,7 @@ function PreviewPageUI(props) {
      <>
 
     <div className='p-5 pb-0 h-20'>
-      <Select onChange={(e)=>handleSetMusic(e.value)} options={musics.map(a=>({value:a.music_id,label:a.title}))}/>
+      <Select value={music ? {value:music.music_id,label:music.title}:''} onChange={(e)=>handleSelectMusic(e.value)} options={musics.map(a=>({value:a.music_id,label:a.title}))}/>
      
     </div>
 

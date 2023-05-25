@@ -6,7 +6,6 @@ import AddMusic from 'components/AddMusic'
 import UpdateMusic from 'components/UpdateMusic'
 import Modal from 'components/Modal'
 
-import withReactContent from 'sweetalert2-react-content';
 import getStyles from './MusicPageUI.style'
 import SearchBar from '../../../../components/SearchBar/SearchBar'
 import * as xlsx from 'xlsx';
@@ -21,7 +20,10 @@ class MusicPageUI extends React.PureComponent {
         errorMsg: null,
         // edit related
         editModal: false,
+        deleteModal:false,
         addModal: false,
+
+        deleteMusicId:null,
         editMusicId: null,
         editInputValue: '',
         editErrorMsg: null,
@@ -55,18 +57,7 @@ class MusicPageUI extends React.PureComponent {
         }
 
         // try{
-        window.alert.fireWithFrame({
-            title: 'You sure you want to upload?',
-            text: "You're uploading ",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
-          },"Delete file?", null, false).then(async (result) => {
-            console.log(result)
-            if(result.isConfirmed)
-            {
+       
         this.getBase64(fileObj,(base64)=>{
             const bufferExcel = Buffer.from(base64.replace("data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64", ""),'base64');
             const wb = xlsx.read(bufferExcel, { type: 'buffer' });
@@ -81,6 +72,7 @@ class MusicPageUI extends React.PureComponent {
         const jsonData = xlsx.utils.sheet_to_json(worksheet, { header: ['Title', 'Lyrics'],range: 1  });
 
         // Do something with the JSON data
+        // console.log(a)
         jsonData.forEach(a=>{
            if(!this.props.list.filter(e=>e.title.toLowerCase()==a.Title.toLowerCase() && e.lyrics.toLowerCase()==a.Lyrics.toLowerCase()).length){
                 // console.log(a)
@@ -90,8 +82,7 @@ class MusicPageUI extends React.PureComponent {
 
         });
     
-        }
-    })
+    
     // }catch(ex){
     //     console.log(ex)
     // }
@@ -104,7 +95,7 @@ class MusicPageUI extends React.PureComponent {
         const { list } = this.props
         // Create a worksheet and add data to it
         // const aoa
-        const worksheet = xlsx.utils.json_to_sheet([...(list.filter(e=>e.title.includes(this.state.keyword)||e.lyrics.includes(this.state.keyword)) ?? []).map(a=>({'Title':a.title,'Lyrics':a.lyrics}))]
+        const worksheet = xlsx.utils.json_to_sheet([...(list.filter(e=>e.title.toLowerCase().match(this.state.keyword.toLowerCase())||e.lyrics.toLowerCase().match(this.state.keyword.toLowerCase())) ?? []).map(a=>({'Title':a.title,'Lyrics':a.lyrics}))]
         );
       
         // Add the worksheet to the workbook
@@ -156,10 +147,8 @@ class MusicPageUI extends React.PureComponent {
 
     handleEditModal = (musicId) => {
         // Prepare modal for update function
-        // 1 - pick the item to be updated
         const { list } = this.props
         const selectedMusic = list.filter(item => item.music_id === musicId)
-        // 2 - set the state for modal display
         this.setState({
             ...this.state,
             editModal: true,
@@ -184,14 +173,19 @@ class MusicPageUI extends React.PureComponent {
         this.setState({...this.state,successMsg:'Successfully Updated!' })
     }
 
-    handleDelete = (musicId) => {
+    handleDelete = () => {
         const { onDeleteMusic } = this.props
-        onDeleteMusic(musicId)
+        
+        onDeleteMusic(this.state.deleteMusicId)
+        this.setState({ ...this.state, deleteMusicId:null, deleteModal: false, editMusicId: null,editErrorMsg:'',successMsg:'' })
+    
     }
+  
 
     render () {
         const {
             editModal,
+            deleteModal,
             errorMsg,
             successMsg,
             inputTitleValue,
@@ -205,6 +199,37 @@ class MusicPageUI extends React.PureComponent {
         const { list, onGetMusic,handleSetMusic } = this.props
         return (
             <div style={styles.wrapper}>
+                <Modal
+                    isVisible={deleteModal}
+                    onDismiss={() => this.setState({ ...this.state,deleteModal: false, deleteMusicId:null, editMusicId: null,editErrorMsg:'',successMsg:'' })}
+                    height={275}
+                    width={1850}
+                >
+                    <div className='bg-white w-96 p-5 rounded'>
+                        <div className="flex-col h-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="m-0 w-20 h-20 hover:scale-110 transition-transform text-red mx-auto mb-2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                        </svg>
+            
+                    
+                    <h1 className="text-center mb-10" > Are you sure to Delete <br/>"<b>{list.find(l=>this.state.deleteMusicId==l.music_id)?.title}</b>" ?</h1>
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                       
+                        <button
+                            children={'Cancel'}
+                            onClick={() => this.setState({ ...this.state,deleteModal: false, deleteMusicId:null, editMusicId: null,editErrorMsg:'',successMsg:'' })}
+                            className="bg-gray-300 hover:bg-gray-200 text-black font-bold py-2 px-4 rounded mr-3"
+                        />
+                        <button
+                            children={'Yes'}
+                            onClick={this.handleDelete}
+                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        />
+                       
+                        </div>
+                        </div>
+                        </div>
+                </Modal>
                 <Modal
                     isVisible={editModal}
                     onDismiss={() => this.setState({ ...this.state,editModal: false, editMusicId: null,editErrorMsg:'',successMsg:'' })}
@@ -268,9 +293,9 @@ class MusicPageUI extends React.PureComponent {
                     </div>
                     
                     <MusicListUI
-                        data={list.filter(e=>e.title.toLowerCase().includes(keyword.toLowerCase())||e.lyrics.toLowerCase().includes(keyword.toLowerCase())) ?? []}
+                        data={list.filter(e=>e.title.toLowerCase().match(keyword.toLowerCase())||e.lyrics.toLowerCase().match(keyword.toLowerCase())) ?? []}
                         onOpen={(musicId) => onGetMusic(musicId)}
-                        onDelete={this.handleDelete}
+                        onDelete={(id)=>this.setState({...this.state, deleteMusicId:id, deleteModal:true })}
                         onEdit={this.handleEditModal}
                         handleSetMusic={handleSetMusic}
                     />

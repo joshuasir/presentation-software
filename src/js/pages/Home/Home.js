@@ -109,8 +109,8 @@ class Home extends Component {
                     return indexA-indexB;
                   })
             }/> :
-            <div className='w-full flex'>
-            <div className='bg-gray-200 w-96 h-screen' style={{ padding: 15 }}>
+            <div className='w-full flex h-screen'>
+            <div className='bg-gray-200 w-96 overflow-y-hidden' style={{ padding: 15 }}>
           
             {(this.state.testing) ? <p>{this.state.testing}</p> : null}
             <MusicPageUI
@@ -124,11 +124,11 @@ class Home extends Component {
                 handleSetMusic={(id)=>this.handleSetMusic(id)}
                 />
             </div>
-        <div className='bg-gray-300 w-1/3 overflow-hidden h-screen'>
+        <div className='bg-gray-300 w-1/3 overflow-y-hidden'>
             <PreviewPageUI musics={list} music={this.state.music} handleSetMusic={(id)=>this.handleSetMusic(id)}/>
 
         </div>
-        <div className='w-1/3 bg-gray-200 overflow-hidden h-screen'>
+        <div className='w-1/3 bg-gray-200 overflow-y-hidden'>
             <StreamPageUI musics={list}/>
         </div>
         </div>

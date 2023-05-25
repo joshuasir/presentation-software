@@ -29,7 +29,7 @@ class AddMusic extends React.PureComponent {
     render () {
         const { errorMsg, successMsg, onTitleInputChange, onDismiss,onLyricsInputChange, inputTitleValue, inputLyricsValue } = this.props
         return (
-            <div className='bg-white w-96 p-5'>
+            <div className='bg-white w-96 p-5 rounded'>
                 <div className="flex-col ">
                     <h5 className='text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-600 mb-5'>Add Music</h5>
                 <form action="#" onSubmit={this.handleAddMusic}>

@@ -6,13 +6,13 @@ This presentation software is an EasyWorship Clone which is a powerful presentat
 
 Key Features:
 
-Song Management:
+### Song Management:
 This app provides robust song management capabilities, allowing you to organize and maintain your song library effortlessly. You can add, edit, and delete songs, categorize them into different genres or themes, and include relevant metadata such as lyrics, and title. With a user-friendly interface, you can easily search and retrieve songs for quick access during presentations. The music will be stored locally and can be distributed in an exported file.
 
-Song Preview:
+### Song Preview:
 Previewing songs is an essential part of the preparation process. Theis app enables you to preview songs before presenting them. You can view the lyrics, adjust number of slide, to ensure a smooth and error-free presentation. This feature allows you to perfect your performance and ensure a seamless flow of lyrics during live presentations.
 
-Presenting:
+### Presenting:
 After previewing, you can adjust the song you want to use, adjust their order and select if you want to present them right away in a new tab or export it as power point
 
 ## Tech stack:

@@ -68,13 +68,13 @@ function PreviewPageUI(props) {
      
     </div>
 
-    <div className='p-5 pl-7 h-2/5 overflow-y-scroll'>
+    <div className='p-3 pl-5 h-2/5 overflow-y-scroll'>
     <ol>
       {music && music.lyrics.split('#').map((a,idx)=>(
         <li style={
           handleSelectedStyle(idx)
         } 
-        className='truncate p-1'
+        className='truncate p-1 hover:bg-gray-100'
         onClick={(e)=>handleSelectedSlide(idx)}
         onMouseEnter={() => setIsHover(idx)}
         onMouseLeave={() => setIsHover(-1)}

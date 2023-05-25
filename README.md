@@ -1,4 +1,5 @@
-# Easy Worship Presentation Software using boilerplate for Electron + React + Redux with SQLite database
+# Easy Worship Clone Presentation Software using boilerplate for Electron + React + Redux with SQLite database
+
 ![image](https://github.com/joshuasir/presentation-software/assets/71873035/d3ee8dd8-7504-4027-8cbd-26cf4dd70fa6)
 
 This presentation software is an EasyWorship Clone which is a powerful presentation software designed for managing songs and presenting lyrics. Whether you're in a worship service, conference, or any event that requires dynamic presentations, this software got you covered. With its intuitive interface and feature-rich functionality, you can easily create, manage, and present your song lyrics in a seamless and engaging manner.

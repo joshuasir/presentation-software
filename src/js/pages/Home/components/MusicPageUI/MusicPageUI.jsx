@@ -76,7 +76,7 @@ class MusicPageUI extends React.PureComponent {
         jsonData.forEach(a=>{
            if(!this.props.list.filter(e=>e.title.toLowerCase()==a.Title.toLowerCase() && e.lyrics.toLowerCase()==a.Lyrics.toLowerCase()).length){
                 // console.log(a)
-                this.handleAdd({title:a.Title,lyrics:a.Lyrics})
+                this.handleAdd({title:a.Title??'',lyrics:a.Lyrics??''})
             }
         })
 
@@ -139,7 +139,7 @@ class MusicPageUI extends React.PureComponent {
     handleAdd = (args) => {
         const { onAddMusic } = this.props
 
-        if (!args ||args.title.length === 0 || args.lyrics.length===0) return this.setState({ ...this.state,errorMsg: 'Please enter both title and lyrics',successMsg:'' })
+        if (!args ||args.title?.length === 0 || args.lyrics?.length===0) return this.setState({ ...this.state,errorMsg: 'Please enter both title and lyrics',successMsg:'' })
 
         onAddMusic(args)
         this.setState({...this.state,inputTitleValue: '',inputLyricsValue:'',successMsg:'Successfully Added!' })

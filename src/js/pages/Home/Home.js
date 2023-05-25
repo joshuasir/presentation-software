@@ -110,7 +110,7 @@ class Home extends Component {
                   })
             }/> :
             <div className='w-full flex h-screen'>
-            <div className='bg-gray-200 w-96 overflow-y-hidden' style={{ padding: 15 }}>
+            <div className='bg-gray-200 w-1/3 overflow-y-hidden' style={{ padding: 15 }}>
           
             {(this.state.testing) ? <p>{this.state.testing}</p> : null}
             <MusicPageUI
